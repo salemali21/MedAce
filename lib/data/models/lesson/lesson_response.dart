@@ -65,6 +65,18 @@ class LessonResponse {
   dynamic quizTime;
 
   Map<String, dynamic> toJson() => _$LessonResponseToJson(this);
+
+  String otp() {
+    var otpStart = video?.indexOf('otp=') ?? 0;
+    var playbackInfoStart = video?.indexOf('&playbackInfo') ?? 0;
+    return video?.substring(otpStart + 4, playbackInfoStart) ?? '';
+  }
+
+  String playbackInfo() {
+    var playbackInfoStart = video?.indexOf('&playbackInfo') ?? 0;
+    var playbackInfoEnd = video?.indexOf('==') ?? 0;
+    return video?.substring(playbackInfoStart + 14, playbackInfoEnd + 2) ?? '';
+  }
 }
 
 @JsonSerializable()

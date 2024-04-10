@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:vdocipher_flutter/vdocipher_flutter.dart';
-import 'package:medace_app/samples.dart';
+
+import '../../../../../core/env.dart';
+
+class VdoPlaybackArgs {
+  VdoPlaybackArgs(
+      this.title,
+      this.otp,
+      this.playbackInfo,
+      );
+
+  final String title;
+  final String otp;
+  final String playbackInfo;
+}
 
 class VdoPlaybackView extends StatefulWidget {
+
+  static const String routeName = '/VdoPlaybackView';
 
   @override
   _VdoPlaybackViewState createState() => _VdoPlaybackViewState();
@@ -15,13 +30,26 @@ class _VdoPlaybackViewState extends State<VdoPlaybackView> {
 
   @override
   Widget build(BuildContext context) {
+    final VdoPlaybackArgs args = ModalRoute.of(context)!.settings.arguments as VdoPlaybackArgs;
     return Scaffold(
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              ValueListenableBuilder(
+                  valueListenable: _isFullScreen,
+                  builder: (context, dynamic value, child) {
+                    return value ? SizedBox.shrink() : _nonFullScreenContent(args.title);
+                  }),
               Flexible(child: Container(
                 child: VdoPlayer(
-                  embedInfo: SAMPLE_1,
+                  embedInfo: EmbedInfo.streaming(
+                      otp: args.otp,
+                      playbackInfo: args.playbackInfo,
+                      embedInfoOptions: EmbedInfoOptions(
+                          autoplay: true
+                      ),
+                  ),
                   onPlayerCreated: (controller) => _onPlayerCreated(controller),
                   onFullscreenChange: _onFullscreenChange,
                   onError: _onVdoError,
@@ -30,12 +58,7 @@ class _VdoPlaybackViewState extends State<VdoPlaybackView> {
                 width: MediaQuery.of(context).size.width,
                 height: _isFullScreen.value ? MediaQuery.of(context).size.height : _getHeightForWidth(MediaQuery.of(context).size.width),
               )),
-              ValueListenableBuilder(
-                  valueListenable: _isFullScreen,
-                  builder: (context, dynamic value, child) {
-                    return value ? SizedBox.shrink() : _nonFullScreenContent();
-                  }),
-            ])
+            ]),
     );
   }
 
@@ -69,10 +92,10 @@ class _VdoPlaybackViewState extends State<VdoPlaybackView> {
     });
   }
 
-  _nonFullScreenContent() {
+  _nonFullScreenContent(String title) {
     return Column(
         children: [
-          Text('Sample Playback', style: TextStyle(fontSize: 20.0),)
+          Text(unescape.convert(title), style: TextStyle(fontSize: 20.0),),
         ]);
   }
 

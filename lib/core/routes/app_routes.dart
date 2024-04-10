@@ -30,6 +30,8 @@ import 'package:medace_app/presentation/screens/user_course_locked/user_course_l
 import 'package:medace_app/presentation/screens/web_checkout/web_checkout_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../presentation/screens/lesson_types/video_lesson/widgets/vdoplayback_view.dart';
+
 class AppRoutes {
   PageRoute generateRoute(RouteSettings routeSettings, BuildContext context) {
     switch (routeSettings.name) {
@@ -106,6 +108,11 @@ class AppRoutes {
       case VideoScreen.routeName:
         return MaterialPageRoute(
           builder: (context) => VideoScreen(),
+          settings: routeSettings,
+        );
+      case VdoPlaybackView.routeName:
+        return MaterialPageRoute(
+          builder: (context) => VdoPlaybackView(),
           settings: routeSettings,
         );
       case QuizLessonScreen.routeName:

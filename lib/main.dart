@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:vdocipher_flutter/vdocipher_flutter.dart';
-import 'package:medace_app/vdoplayback_view.dart';
+import 'package:medace_app/presentation/screens/lesson_types/video_lesson/widgets/vdoplayback_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';

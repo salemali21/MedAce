@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medace_app/core/constants/assets_path.dart';
 import 'package:medace_app/main.dart';
 import 'package:medace_app/presentation/bloc/lesson_video/lesson_video_bloc.dart';
-import 'package:medace_app/presentation/screens/lesson_types/video_lesson/widgets/video_screen.dart';
 import 'package:medace_app/presentation/screens/lesson_types/widgets/lesson_bottom_widget.dart';
 import 'package:medace_app/presentation/screens/lesson_types/widgets/lesson_materials_widget.dart';
 import 'package:medace_app/presentation/screens/questions_screens/questions_tab/questions_tab_screen.dart';
@@ -13,6 +12,8 @@ import 'package:medace_app/presentation/widgets/loader_widget.dart';
 import 'package:medace_app/presentation/widgets/webview_widgets/web_view_widget.dart';
 import 'package:medace_app/theme/app_color.dart';
 import 'package:medace_app/theme/const_dimensions.dart';
+import '../../../../core/env.dart';
+import 'widgets/vdoplayback_view.dart';
 
 class LessonVideoScreenArgs {
   LessonVideoScreenArgs(this.courseId, this.lessonId, this.authorAva, this.authorName, this.hasPreview, this.trial);
@@ -111,7 +112,7 @@ class _LessonVideoScreenState extends State<_LessonVideoScreenWidget> {
                   ),
                   Flexible(
                     child: Text(
-                      lessonLabel ?? '',
+                      unescape.convert(lessonLabel ?? ''),
                       textScaleFactor: 1.0,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -180,7 +181,7 @@ class _LessonVideoScreenState extends State<_LessonVideoScreenWidget> {
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 7.0),
                           child: Text(
-                            '${item.title}',
+                            unescape.convert('${item.title}'),
                             style: TextStyle(
                               fontSize: 24.0,
                               fontWeight: FontWeight.w700,
@@ -235,11 +236,11 @@ class _LessonVideoScreenState extends State<_LessonVideoScreenWidget> {
                                           ),
                                           onPressed: () {
                                             Navigator.of(context).pushNamed(
-                                              VideoScreen.routeName,
-                                              arguments: VideoScreenArgs(
+                                              VdoPlaybackView.routeName,
+                                              arguments: VdoPlaybackArgs(
                                                 item.title!,
-                                                item.video!,
-                                                item.videoType,
+                                                item.otp(),
+                                                item.playbackInfo(),
                                               ),
                                             );
                                           },
